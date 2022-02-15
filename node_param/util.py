@@ -132,11 +132,16 @@ def load_CIRCUIT_graphs(rand_seed=0):
     value1 = np.load("../circuit1/value1000.npy")
     # print(value[0])
     value2 = np.load("../circuit2/value1000.npy")
+
     # len = np.shape(value[0])
     # print(value[0])
     value1 = value1.reshape((1000, 5, 32))
     value2 = value2.reshape((1000, 6, 32))
-    value2 = reorder_data2(value2)
+    for i in range(np.shape(value2)[0]):
+        value2[i] = reorder_data2(value2[i])
+    print("value2:", value2)
+    # value2 = reorder_data2(value2)
+
     # value = value[:, :, :num_edge_feature]
     performance1 = np.load("../circuit1/performance1000.npy")
     performance2 = np.load("../circuit2/performance1000.npy")
@@ -160,26 +165,26 @@ def decode_CIRCUIT_to_igraph1(value):
     n = 7
     g.add_vertices(n)
     g.vs[0]['type'] = 0  # virtual start
-    #g.vs[0]['color'] = 'red'
-    #g.vs[0]['label'] = 'start'
+    # g.vs[0]['color'] = 'red'
+    # g.vs[0]['label'] = 'start'
     g.vs[1]['type'] = 6  # gm+
-    #g.vs[1]['color'] = 'blue'
-    #g.vs[1]['label'] = 'gm+'
+    # g.vs[1]['color'] = 'blue'
+    # g.vs[1]['label'] = 'gm+'
     g.vs[2]['type'] = 7  # gm-
-    #g.vs[2]['color'] = 'green'
-    #g.vs[2]['label'] = 'gm-'
+    # g.vs[2]['color'] = 'green'
+    # g.vs[2]['label'] = 'gm-'
     g.vs[3]['type'] = 6  # gm+
-    #g.vs[3]['color'] = 'blue'
-    #g.vs[3]['label'] = 'gm+'
+    # g.vs[3]['color'] = 'blue'
+    # g.vs[3]['label'] = 'gm+'
     g.vs[4]['type'] = 7  # gm-
-    #g.vs[4]['color'] = 'green'
-    #g.vs[4]['label'] = 'gm-'
+    # g.vs[4]['color'] = 'green'
+    # g.vs[4]['label'] = 'gm-'
     g.vs[5]['type'] = 11  # gm-_c_series
-    #g.vs[5]['color'] = 'brown'
-    #g.vs[5]['label'] = 'gm-_c_series'
+    # g.vs[5]['color'] = 'brown'
+    # g.vs[5]['label'] = 'gm-_c_series'
     g.vs[6]['type'] = 1  # virtual end
-    #g.vs[6]['color'] = 'yellow'
-    #g.vs[6]['label'] = 'end'
+    # g.vs[6]['color'] = 'yellow'
+    # g.vs[6]['label'] = 'end'
 
     for i in range(n):
         if i == 0 or i == n - 1:
@@ -206,29 +211,29 @@ def decode_CIRCUIT_to_igraph2(value):
     n = 8
     g.add_vertices(n)
     g.vs[0]['type'] = 0  # virtual start
-    #g.vs[0]['color'] = 'red'
-    #g.vs[0]['label'] = 'start'
+    # g.vs[0]['color'] = 'red'
+    # g.vs[0]['label'] = 'start'
     g.vs[1]['type'] = 6  # gm+
-    #g.vs[1]['color'] = 'blue'
-    #g.vs[1]['label'] = 'gm+'
+    # g.vs[1]['color'] = 'blue'
+    # g.vs[1]['label'] = 'gm+'
     g.vs[2]['type'] = 6  # gm+
-    #g.vs[2]['color'] = 'blue'
-    #g.vs[2]['label'] = 'gm+'
+    # g.vs[2]['color'] = 'blue'
+    # g.vs[2]['label'] = 'gm+'
     g.vs[3]['type'] = 7  # gm-
-    #g.vs[3]['color'] = 'green'
-    #g.vs[3]['label'] = 'gm-'
+    # g.vs[3]['color'] = 'green'
+    # g.vs[3]['label'] = 'gm-'
     g.vs[4]['type'] = 8  # gm+_r_series
-    #g.vs[4]['color'] = 'grey'
-    #g.vs[4]['label'] = 'gm+_r_series'
+    # g.vs[4]['color'] = 'grey'
+    # g.vs[4]['label'] = 'gm+_r_series'
     g.vs[5]['type'] = 6  # gm+
-    #g.vs[5]['color'] = 'blue'
-    #g.vs[5]['label'] = 'gm+'
+    # g.vs[5]['color'] = 'blue'
+    # g.vs[5]['label'] = 'gm+'
     g.vs[6]['type'] = 9  # gm+_c_series
-    #g.vs[6]['color'] = 'purple'
-    #g.vs[6]['label'] = 'gm+_c_series'
+    # g.vs[6]['color'] = 'purple'
+    # g.vs[6]['label'] = 'gm+_c_series'
     g.vs[7]['type'] = 1  # virtual end
-    #g.vs[7]['color'] = 'yellow'
-    #g.vs[7]['label'] = 'end'
+    # g.vs[7]['color'] = 'yellow'
+    # g.vs[7]['label'] = 'end'
 
     for i in range(n):
         if i == 0 or i == n - 1:
@@ -303,7 +308,7 @@ def add_node(graph, g, node_id, shape='box', style='filled'):
         g.vs[node_id]['label'] = 'new'
     graph.add_node(node_id, label=g.vs[node_id]['label'], color='black', fillcolor=g.vs[node_id]['color'],
                    shape=shape, style=style, fontsize=24)
-    #if not (g.vs[node_id]['type'] == 0 and node_id != 0):
+    # if not (g.vs[node_id]['type'] == 0 and node_id != 0):
     #    graph.add_node(node_id, label=g.vs[node_id]['label'], color='black', fillcolor=g.vs[node_id]['color'],
     #                   shape=shape, style=style, fontsize=24)
 
@@ -313,19 +318,23 @@ def add_node(graph, g, node_id, shape='box', style='filled'):
 
 def is_same_DAG(g0, g1):
     # Correct rate of edge type prediction
+    all_n = 0
+    right_n = 0
     all_e = 0
     right_e = 0
-    # fix_e = [[1,2],[2,3],[3,4],[1,5],[4,5]]
     for vo in range(2, g0.vcount() - 1):
+        g0_node_type = g0.vs['type'][vo]
+        g1_node_type = g1.vs['type'][vo]
+        if g0_node_type == g1_node_type:
+            right_n = right_n + 1
+        all_n = all_n + 1
         for vi in g0.get_adjlist(igraph.IN)[vo]:
-            eid0 = g0.get_eid(vi, vo)
-            eid1 = g1.get_eid(vi, vo)
-            g0_edge_type = g0.es['weight'][eid0]
-            g1_edge_type = g1.es['weight'][eid1]
-            if g0_edge_type == g1_edge_type:
+            if vi in g1.get_adjlist(igraph.IN)[vo]:
                 right_e = right_e + 1
             all_e = all_e + 1
-    return right_e / all_e
+    node_correct = right_n / all_n
+    edge_correct = right_e / all_e
+    return node_correct and edge_correct
 
 
 def load_module_state(model, state_name):
